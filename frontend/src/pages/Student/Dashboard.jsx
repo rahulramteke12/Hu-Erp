@@ -11,9 +11,16 @@ import {
   Calendar,
   DollarSign,
   Award,
+  TrendingUp,
   Users,
   FileText,
   Bell,
+  ChevronRight,
+  Clock,
+  MapPin,
+  User,
+  Star,
+  Activity
 } from 'lucide-react';
 
 const StudentDashboard = () => {
@@ -38,14 +45,50 @@ const StudentDashboard = () => {
     queryFn: getTodaySchedule,
   });
 
-  if (isLoading) return <div className="p-8">Loading dashboard...</div>;
-  if (isError) return <div className="p-8 text-red-500">Failed to load dashboard</div>;
+  if (isLoading) return <div className="p-6 sm:p-8">Loading dashboard...</div>;
+  if (isError) return <div className="p-6 sm:p-8 text-red-500">Failed to load dashboard</div>;
 
   const stats = [
-    { name: 'Attendance', value: `${data.attendance}%`, icon: Calendar },
-    { name: 'CGPA', value: data.cgpa, icon: Award },
-    { name: 'Pending Fees', value: `₹${data.pendingFees}`, icon: DollarSign },
-    { name: 'Courses', value: data.activeCourses, icon: BookOpen },
+    { 
+      name: 'Attendance', 
+      value: `${data.attendance}%`, 
+      icon: Calendar,
+      change: '+2.5% from last month',
+      trend: 'up',
+      color: 'blue',
+      bgGradient: 'from-blue-500 to-blue-600',
+      progress: data.attendance,
+    },
+    { 
+      name: 'CGPA', 
+      value: data.cgpa, 
+      icon: Award,
+      change: '+0.2 from last semester',
+      trend: 'up',
+      color: 'emerald',
+      bgGradient: 'from-emerald-500 to-emerald-600',
+      progress: (parseFloat(data.cgpa) / 10) * 100,
+    },
+    { 
+      name: 'Pending Fees', 
+      value: `₹${data.pendingFees}`, 
+      icon: DollarSign,
+      change: 'Due in 15 days',
+      trend: 'neutral',
+      color: 'amber',
+      bgGradient: 'from-amber-500 to-amber-600',
+      progress: data.pendingFees > 0 ? 75 : 0,
+    },
+    { 
+      name: 'Active Courses', 
+      value: data.activeCourses, 
+      icon: BookOpen,
+      change: 'This semester',
+      trend: 'neutral',
+      color: 'purple',
+      bgGradient: 'from-purple-500 to-purple-600',
+      progress: (data.activeCourses / 8) * 100,
+    },
   ];
 
   return (
